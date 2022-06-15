@@ -1,0 +1,26 @@
+
+/**
+ * 
+ *
+ * @author Dorbal Emilio Aldana Ramos 2021604 y Kevin Josue Xulu Solis 2021348
+ * @date 5/04/2022
+ * @time 16:38:10
+ * Código técnico: IN5BV
+ * Grupo: 1 (Jueves)
+ */
+
+#menu-bar {
+    -fx-background-color:  #FFFFFF;
+    -fx-background-radius: 10 10 10 10;
+    
+}
+
+
+#menu-modulos:hover{
+    -fx-background-color: black;
+    -fx-text-fill: orange;
+}
+
+.menu-bar .menu-button .label:hover{
+    -fx-text-fill: red;
+}
