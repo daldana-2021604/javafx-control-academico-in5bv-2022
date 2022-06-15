@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1200.0" stylesheets="@../resources/css/EstiloMenuPrincipal.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.in5bv.dorbalaldana.kevinxulu.controllers.MenuPrincipalController">
+   <children>
+      <ImageView fitHeight="699.0" fitWidth="1219.0" layoutX="-4.0" layoutY="-41.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Emilio.png" />
+         </image>
+      </ImageView>
+      <MenuBar id="menu-bar" layoutX="36.0" layoutY="16.0" prefHeight="27.0" prefWidth="110.0">
+        <menus>
+          <Menu id="menu-modulos" mnemonicParsing="false" text="Módulos">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#clicAlumnos" text="Alumnos" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicInstructores" text="Instructores" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicSalones" text="Salones" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicCarrerasTecnicas" text="Carreras técnicas" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicHorarios" text="Horarios" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicCursos" text="Cursos" />
+                  <MenuItem mnemonicParsing="false" onAction="#clicAsignaciones" text="Asignación alumnos" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="?">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Acerca de" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

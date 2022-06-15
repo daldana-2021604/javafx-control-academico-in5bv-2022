@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="603.0" prefWidth="1189.0" stylesheets="@../resources/css/EstiloModulos.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.in5bv.dorbalaldana.kevinxulu.controllers.SalonesController">
+   <children>
+      <BorderPane layoutX="-3.0" layoutY="-3.0" prefHeight="606.0" prefWidth="1024.0">
+         <left>
+            <Pane id="panel-navegacion" prefHeight="587.0" prefWidth="254.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane id="pane-entidad" layoutX="50.0" layoutY="25.0" prefHeight="173.0" prefWidth="145.0">
+                     <children>
+                        <VBox alignment="CENTER" layoutX="21.0" layoutY="11.0" prefHeight="138.0" prefWidth="92.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Salones">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ImageView fitHeight="111.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/aula.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+                  <VBox id="vbox-crud" layoutX="42.0" layoutY="246.0" prefHeight="254.0" prefWidth="176.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="169.0">
+                           <children>
+                              <Button fx:id="btnNuevo" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#clicNuevo" prefHeight="62.0" prefWidth="200.0" styleClass="botones-crud" text="Nuevo">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <ImageView fx:id="imgNuevo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/boton-agregar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="64.0" prefWidth="169.0">
+                           <children>
+                              <Button fx:id="btnModificar" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#clicModificar" prefHeight="62.0" prefWidth="200.0" styleClass="botones-crud" text="Modificar">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fx:id="imgModificar" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/editar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="62.0" prefWidth="172.0">
+                           <children>
+                              <Button fx:id="btnEliminar" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#cliclEliminar" prefHeight="62.0" prefWidth="200.0" styleClass="botones-crud" text="Eliminar">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fx:id="imgEliminar" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/eliminar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="140.0">
+                           <children>
+                              <Button fx:id="btnReporte" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#clicReporte" prefHeight="62.0" prefWidth="200.0" styleClass="botones-crud" text="Reporte">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/portapapeles.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+         </left>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane layoutX="55.0" layoutY="31.0" prefHeight="148.0" prefWidth="880.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="139.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="0.0" prefWidth="32.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="0.0" prefWidth="92.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="26.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="1.0" prefWidth="43.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="78.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="2.0" prefWidth="18.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="53.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="67.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="175.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="68.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="44.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="59.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="27.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="29.0" minHeight="8.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="53.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Código de Salón:">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtCod" disable="true" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                        <Label text="Descripción:" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtDesc" disable="true" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                        <Label text="Edificio:" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtEdificio" disable="true" editable="false" prefHeight="25.0" prefWidth="118.0" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                        <Label text="Capacidad Máxima:" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtCapM" disable="true" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <Label text="Nivel:" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtNivel" disable="true" editable="false" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+                  <TableView fx:id="tblSalones" layoutX="37.0" layoutY="208.0" onMouseClicked="#seleccionarElemento" prefHeight="308.0" prefWidth="795.0">
+                    <columns>
+                      <TableColumn fx:id="colCod" prefWidth="183.0" text="Codigo de Salon" />
+                      <TableColumn fx:id="colDesc" prefWidth="175.0" text="Descripcion" />
+                        <TableColumn fx:id="colCapM" prefWidth="179.0" text="Capacidad Máxima" />
+                        <TableColumn fx:id="colEdificio" prefWidth="135.0" text="Edificio" />
+                        <TableColumn fx:id="colNivel" prefWidth="122.0" text="Nivel" />
+                    </columns>
+                  </TableView>
+                  <ImageView fx:id="imgRegresar" fitHeight="56.0" fitWidth="62.0" layoutX="849.0" layoutY="527.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/girar-a-la-izquierda.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
