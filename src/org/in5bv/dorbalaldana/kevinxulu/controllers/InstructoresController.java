@@ -42,7 +42,7 @@ import org.in5bv.dorbalaldana.kevinxulu.system.Principal;
  * @time 09:19:10
  * Carné 2021604
  * Código técnico: IN5BV
- * Grupo: 1
+ * 
  */
 public class InstructoresController implements Initializable {
 
