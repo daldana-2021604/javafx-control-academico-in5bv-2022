@@ -1,5 +1,3 @@
-
-
 package org.in5bv.dorbalaldana.kevinxulu.controllers;
 
 import com.jfoenix.controls.JFXTimePicker;
@@ -29,6 +27,8 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,35 +39,27 @@ import javafx.scene.input.MouseEvent;
 import org.in5bv.dorbalaldana.db.Conexion;
 
 import org.in5bv.dorbalaldana.kevinxulu.models.Horarios;
-
-
-
+import org.in5bv.dorbalaldana.kevinxulu.reports.GenerarReporte;
 
 /**
  *
  * @author Kevin Josue Xulú Solis
  * @date 11/06/2022
- * @time 17:17:40
- * Carne: 2021348
- * Código tecnico: IN5BV
- * Grupo: 1
+ * @time 17:17:40 Carne: 2021348 Código tecnico: IN5BV Grupo: 1
  */
-
-
 public class HorariosController implements Initializable {
-    
-    private enum Operacion{
+
+    private enum Operacion {
         NINGUNO, GUARDAR, ACTUALIZAR;
     }
-      private final String PAQUETE_IMAGES = "org/in5bv/dorbalaldana/kevinxulu/resources/images/";
-    
+    private final String PAQUETE_IMAGES = "org/in5bv/dorbalaldana/kevinxulu/resources/images/";
+
     private Operacion operacion = Operacion.NINGUNO;
-    
+
     private Principal escenarioPrincipal;
     private ObservableList<Horarios> listaHorarios;
-    
 
- @FXML
+    @FXML
     private Button btnNuevo;
 
     @FXML
@@ -121,12 +113,11 @@ public class HorariosController implements Initializable {
     @FXML
     private TextField txtId;
 
-    
     @FXML
     private TableView tblHorario;
 
     @FXML
-    private TableColumn colId; 
+    private TableColumn colId;
 
     @FXML
     private TableColumn colHorarioEntrada;
@@ -149,31 +140,33 @@ public class HorariosController implements Initializable {
     @FXML
     private TableColumn colViernes;
 
-   
-
     @FXML
     private ImageView imgRegresar;
 
+    @FXML
+    private TextField txtCantidadDatos;
+
+    private int contador = 0;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cargarDatos(); 
+        cargarDatos();
     }
-    
-    
-    public ObservableList getHorarios(){
+
+    public ObservableList getHorarios() {
         ArrayList<Horarios> lista = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try {
             //stmt = Conexion.getInstance().getConexion().createStatement();
             pstmt = Conexion.getInstance().getConexion().prepareCall("CALL sp_horarios_read()");
             rs = pstmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Horarios horario = new Horarios();
                 horario.setId(rs.getInt(1));
                 horario.setHorarioInicio(rs.getTime(2).toLocalTime());
-                horario.setHorarioFinal(rs.getTime(3).toLocalTime());             
+                horario.setHorarioFinal(rs.getTime(3).toLocalTime());
                 horario.setLunes(rs.getBoolean(4));
                 horario.setMartes(rs.getBoolean(5));
                 horario.setMiercoles(rs.getBoolean(6));
@@ -182,40 +175,43 @@ public class HorariosController implements Initializable {
                 System.out.println(horario.toString());
 
                 lista.add(horario);
-                
+
+                for (int i = 0; i <= lista.size(); i++) {
+                    contador = 0 + i;
+                }
+
             }
-            
+
             listaHorarios = FXCollections.observableArrayList(lista);
-            
+
         } catch (SQLException e) {
             System.err.println("Se produjo un error al intentar listar la tabla de Horarios");
             System.err.println("Message: " + e.getMessage());
             System.err.println("Error code: " + e.getErrorCode());
             System.err.println("SQLState: " + e.getSQLState());
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-            
+        } finally {
+
             try {
                 if (rs != null) {
                     rs.close();
                 }
                 if (pstmt != null) {
                     pstmt.close();
-                }  
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
         return listaHorarios;
-    
-    }
-   
-    
 
-     public void cargarDatos() {
+    }
+
+    public void cargarDatos() {
+        Horarios horario = new Horarios();
         tblHorario.setItems(getHorarios());
         colId.setCellValueFactory(new PropertyValueFactory<Horarios, String>("id"));
         colHorarioEntrada.setCellValueFactory(new PropertyValueFactory<Horarios, String>("horarioInicio"));
@@ -225,9 +221,10 @@ public class HorariosController implements Initializable {
         colMiercoles.setCellValueFactory(new PropertyValueFactory<Horarios, String>("miercoles"));
         colJueves.setCellValueFactory(new PropertyValueFactory<Horarios, String>("jueves"));
         colViernes.setCellValueFactory(new PropertyValueFactory<Horarios, String>("viernes"));
+        horario.setCantidadDatos(contador);
+        txtCantidadDatos.setText(Integer.toString(horario.getCantidadDatos()));
     }
-     
-     
+
     @FXML
 
     private boolean existeElementoSeleccionado() {
@@ -236,26 +233,22 @@ public class HorariosController implements Initializable {
 
     @FXML
     public void seleccionarElemento() {
-        if (existeElementoSeleccionado() == true) 
-        {
-        txtId.setText(String.valueOf(((Horarios)tblHorario.getSelectionModel().getSelectedItem()).getId()));
-        tmpHoraEntrada.setValue(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).getHorarioInicio());
-        tmpHoraFinal.setValue(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).getHorarioFinal());
-        chbxLunes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isLunes()));
-        chbxMartes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isMartes()));
-        chbxMiercoles.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isMiercoles()));
-        chbxJueves.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isJueves()));
-        chbxViernes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isViernes()));
-        
-            
-           
+        if (existeElementoSeleccionado() == true) {
+            txtId.setText(String.valueOf(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).getId()));
+            tmpHoraEntrada.setValue(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).getHorarioInicio());
+            tmpHoraFinal.setValue(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).getHorarioFinal());
+            chbxLunes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isLunes()));
+            chbxMartes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isMartes()));
+            chbxMiercoles.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isMiercoles()));
+            chbxJueves.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isJueves()));
+            chbxViernes.setText(Boolean.toString(((Horarios) tblHorario.getSelectionModel().getSelectedItem()).isViernes()));
+
         }
-    
+
     }
 
     private boolean eliminarHorario() {
-        if (existeElementoSeleccionado())
-        {
+        if (existeElementoSeleccionado()) {
             Horarios horario = (Horarios) tblHorario.getSelectionModel().getSelectedItem();
             System.out.println(horario);
             PreparedStatement pstmt = null;
@@ -265,23 +258,17 @@ public class HorariosController implements Initializable {
                 System.out.println(pstmt.toString());
                 pstmt.execute();
                 return true;
-            } catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 System.err.println("\nSe produjo un error al intentar eliminar el siguente Registro: " + horario.toString());
                 e.printStackTrace();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } finally
-            {
-                try
-                {
-                    if (pstmt != null)
-                    {
+            } finally {
+                try {
+                    if (pstmt != null) {
                         pstmt.close();
                     }
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -289,18 +276,16 @@ public class HorariosController implements Initializable {
         return false;
     }
 
-   public Principal getEscenarioPrincipal() {
+    public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;
     }
 
     public void setEscenarioPrincipal(Principal escenarioPrincipal) {
         this.escenarioPrincipal = escenarioPrincipal;
     }
-    
+
     private void deshabilitarCampos() {
         txtId.setEditable(false);
-       
-        
 
         txtId.setDisable(true);
         tmpHoraEntrada.setDisable(true);
@@ -310,12 +295,12 @@ public class HorariosController implements Initializable {
         chbxMiercoles.setSelected(true);
         chbxJueves.setSelected(true);
         chbxViernes.setSelected(true);
-        
+
     }
 
     private void habilitarCampos() {
         txtId.setEditable(true);
-        
+
         txtId.setDisable(false);
         tmpHoraEntrada.setDisable(false);
         tmpHoraFinal.setDisable(false);
@@ -324,7 +309,7 @@ public class HorariosController implements Initializable {
         chbxMiercoles.setSelected(false);
         chbxJueves.setSelected(false);
         chbxViernes.setSelected(false);
-        
+
     }
 
     private void limpiarCampos() {
@@ -336,12 +321,10 @@ public class HorariosController implements Initializable {
         chbxMiercoles.setSelected(false);
         chbxJueves.setSelected(false);
         chbxViernes.setSelected(false);
-        
 
     }
-    
-    
-private boolean agregarHorario(){
+
+    private boolean agregarHorario() {
         Horarios horario = new Horarios();
         horario.setHorarioInicio(tmpHoraEntrada.getValue());
         horario.setHorarioFinal(tmpHoraFinal.getValue());
@@ -350,10 +333,10 @@ private boolean agregarHorario(){
         horario.setMiercoles(chbxMiercoles.isSelected());
         horario.setJueves(chbxJueves.isSelected());
         horario.setViernes(chbxViernes.isSelected());
-        
+
         PreparedStatement pstmt = null;
-        
-        try{
+
+        try {
             pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_horarios_create(?, ?, ?, ?, ?, ?, ?)}");
             pstmt.setTime(1, Time.valueOf(horario.getHorarioInicio()));
             pstmt.setTime(2, Time.valueOf(horario.getHorarioFinal()));
@@ -362,35 +345,32 @@ private boolean agregarHorario(){
             pstmt.setBoolean(5, horario.isMiercoles());
             pstmt.setBoolean(6, horario.isJueves());
             pstmt.setBoolean(7, horario.isViernes());
-           
-            
+
             System.out.println(pstmt.toString());
             pstmt.execute();
             listaHorarios.add(horario);
-            
+
             return true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.err.println("\nSe produjo un error al intentar insertar el siguiente registro: " + horario.toString());
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-            try{
-                if(pstmt != null){
-                   pstmt.close();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            
-        }
-            
+
         }
         return false;
     }
-    
 
-
- private boolean actualizarHorario(){
+    private boolean actualizarHorario() {
         Horarios horario = new Horarios();
         horario.setId(Integer.parseInt(txtId.getText()));
         horario.setHorarioInicio(tmpHoraEntrada.getValue());
@@ -400,10 +380,10 @@ private boolean agregarHorario(){
         horario.setMiercoles(chbxMiercoles.isSelected());
         horario.setJueves(chbxJueves.isSelected());
         horario.setViernes(chbxViernes.isSelected());
-        
+
         PreparedStatement pstmt = null;
-        
-        try{
+
+        try {
             pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_horarios_update(?, ?, ?, ?, ?, ?, ?, ?)}");
             pstmt.setInt(1, horario.getId());
             pstmt.setTime(2, Time.valueOf(horario.getHorarioInicio()));
@@ -413,33 +393,31 @@ private boolean agregarHorario(){
             pstmt.setBoolean(6, horario.isMiercoles());
             pstmt.setBoolean(7, horario.isJueves());
             pstmt.setBoolean(8, horario.isViernes());
-           
-            
+
             System.out.println(pstmt.toString());
             pstmt.execute();
             listaHorarios.add(horario);
-            
+
             return true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.err.println("\nSe produjo un error al intentar actualizar el siguiente registro: " + horario.toString());
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-            try{
-                if(pstmt != null){
-                   pstmt.close();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            
-        }
-            
+
         }
         return false;
     }
 
-    
     @FXML
     private void clicNuevo() {
         switch (operacion) {
@@ -475,7 +453,7 @@ private boolean agregarHorario(){
                     limpiarCampos();
                     deshabilitarCampos();
                     cargarDatos();
-                    
+
                     Alert information = new Alert(Alert.AlertType.INFORMATION);
                     information.setTitle("CONTROL ACADÉMICO");
                     information.setHeaderText(null);
@@ -503,7 +481,7 @@ private boolean agregarHorario(){
                 break;
         }
     }
-    
+
     @FXML
     private void clicModificar() {
         switch (operacion) {
@@ -555,7 +533,6 @@ private boolean agregarHorario(){
                 btnReporte.setVisible(true);
                 btnReporte.setDisable(false);
 
-               
                 deshabilitarCampos();
 
                 operacion = Operacion.NINGUNO;
@@ -567,15 +544,15 @@ private boolean agregarHorario(){
                         limpiarCampos();
                         deshabilitarCampos();
                         cargarDatos();
-                        
-                    Alert information = new Alert(Alert.AlertType.INFORMATION);
-                    information.setTitle("CONTROL ACADÉMICO");
-                    information.setHeaderText(null);
-                    information.setContentText("Registro Actualizado Exitosamente");
-                    Stage stageInformation = (Stage) information.getDialogPane().getScene().getWindow();
-                    stageInformation.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-                    information.show();
-                        
+
+                        Alert information = new Alert(Alert.AlertType.INFORMATION);
+                        information.setTitle("CONTROL ACADÉMICO");
+                        information.setHeaderText(null);
+                        information.setContentText("Registro Actualizado Exitosamente");
+                        Stage stageInformation = (Stage) information.getDialogPane().getScene().getWindow();
+                        stageInformation.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
+                        information.show();
+
                         btnNuevo.setVisible(true);
                         btnNuevo.setDisable(false);
 
@@ -599,33 +576,32 @@ private boolean agregarHorario(){
 
     }
 
-     @FXML
-    private void cliclEliminar(){
+    @FXML
+    private void cliclEliminar() {
         switch (operacion) {
             case ACTUALIZAR:
-                  btnNuevo.setDisable(false);
-                  btnNuevo.setVisible(true);
-                  
-                  btnModificar.setText("Modificar");
-                  imgModificar.setImage(new Image(PAQUETE_IMAGES + "editar.png/"));
-                  
-                  btnEliminar.setText("Eliminar");
-                  imgEliminar.setImage(new Image(PAQUETE_IMAGES + "eliminar.png/"));
-                  
-                  btnReporte.setDisable(false);
-                  btnReporte.setVisible(true);
-                  
+                btnNuevo.setDisable(false);
+                btnNuevo.setVisible(true);
+
+                btnModificar.setText("Modificar");
+                imgModificar.setImage(new Image(PAQUETE_IMAGES + "editar.png/"));
+
+                btnEliminar.setText("Eliminar");
+                imgEliminar.setImage(new Image(PAQUETE_IMAGES + "eliminar.png/"));
+
+                btnReporte.setDisable(false);
+                btnReporte.setVisible(true);
+
                 limpiarCampos();
                 deshabilitarCampos();
-                
-                 tblHorario.getSelectionModel().clearSelection();
-                
+
+                tblHorario.getSelectionModel().clearSelection();
+
                 operacion = Operacion.NINGUNO;
-                
-                break;  
+
+                break;
             case NINGUNO:
-                  if (existeElementoSeleccionado())
-                {
+                if (existeElementoSeleccionado()) {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Control Academico Kinal");
@@ -633,10 +609,8 @@ private boolean agregarHorario(){
                     alert.setContentText("¿Esta seguro que desea eliminar el registro seleccionado?");
                     Optional<ButtonType> result = alert.showAndWait();
 
-                    if (result.get().equals(ButtonType.OK))
-                    {
-                        if (eliminarHorario())
-                        {
+                    if (result.get().equals(ButtonType.OK)) {
+                        if (eliminarHorario()) {
                             listaHorarios.remove(tblHorario.getSelectionModel().getFocusedIndex());
                             limpiarCampos();
                             cargarDatos();
@@ -647,22 +621,18 @@ private boolean agregarHorario(){
                             Stage stageInformation = (Stage) information.getDialogPane().getScene().getWindow();
                             stageInformation.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
                             information.show();
-                            
-                            
+
                         }
-                    } else
-                    {
+                    } else {
                         alert.close();
                         tblHorario.getSelectionModel().clearSelection();
                         limpiarCampos();
                     }
 
-                    if (eliminarHorario())
-                    {
+                    if (eliminarHorario()) {
                         cargarDatos();
                     }
-                } else
-                {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Control Académico Kinal");
                     alert.setHeaderText(null);
@@ -673,13 +643,14 @@ private boolean agregarHorario(){
                 }
 
                 break;
-          
+
         }
     }
-    
+
     @FXML
     private void clicReporte() {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        // Inicio de reporte para aplicacion no pro
+        /*Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         // cambiar titulo del mensaje:
         alerta.setTitle("AVISO!");
         // cambiar hear:
@@ -692,18 +663,17 @@ private boolean agregarHorario(){
         alerta.setContentText("Esta función solo esta disponible en la versión PRO");
         Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
         stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-        alerta.show();   
+        alerta.show();*/
+        // Version pro
+        Map<String, Object> parametros = new HashMap();
+        parametros.put("LOGO_HORARIOS", PAQUETE_IMAGES + "tiempo.png");
+        GenerarReporte.getInstance().mostrarReporte("Horarios.jasper", parametros, "Reporte Horarios");
+
     }
-    
-    
-      @FXML
+
+    @FXML
     private void clicRegresar(MouseEvent event) {
         escenarioPrincipal.mostrarEscenaPrincipal();
     }
-    
-    
-    
-    
-    
-    
+
 }

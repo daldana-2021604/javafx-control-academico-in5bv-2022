@@ -1,7 +1,6 @@
 
 package org.in5bv.dorbalaldana.kevinxulu.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -27,6 +26,7 @@ public class AsignacionesAlumnos {
     private StringProperty alumnoId;
     private IntegerProperty cursoId;
     private ObjectProperty<LocalDateTime> fechaAsignacion;
+    private int cantidadeDatos;
 
     public AsignacionesAlumnos() {
         this.id = new SimpleIntegerProperty();
@@ -78,6 +78,15 @@ public class AsignacionesAlumnos {
     public void setCursoId(int cursoId) {
         this.cursoId.set(cursoId);
     }
+
+    public int getCantidadeDatos() {
+        return cantidadeDatos;
+    }
+
+    public void setCantidadeDatos(int cantidadeDatos) {
+        this.cantidadeDatos = cantidadeDatos;
+    }
+    
 
     public ObjectProperty<LocalDateTime> fechaAsignacion() {
         return fechaAsignacion;

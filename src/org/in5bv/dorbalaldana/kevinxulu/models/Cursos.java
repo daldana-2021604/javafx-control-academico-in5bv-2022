@@ -19,6 +19,7 @@ public class Cursos {
     private IntegerProperty horarioId;
     private IntegerProperty instructorId;
     private StringProperty salonId;
+    private int cantidadDatos;
 
     public Cursos() {
         this.id = new SimpleIntegerProperty();
@@ -161,6 +162,14 @@ public class Cursos {
     
     public StringProperty salonId() {
         return salonId;
+    }
+
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
     }
 
     @Override

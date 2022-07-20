@@ -1,0 +1,24 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+
+#fondo {
+    -fx-background-color: #000;
+}
+
+#titulo {
+    -fx-text-aling: center;
+    -fx-text-fill: #FFFFFF;
+}
+
+#fondo2 {
+    -fx-background-color: #FFF;
+}
+
+#inicioSesion{
+    -fx-background-color: #E7E7E7
+}

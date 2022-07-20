@@ -16,6 +16,7 @@ public class Instructores {
     private String email;
     private String telefono;
     private LocalDate fechaNacimiento;
+    private int cantidadDatos;
 
     public Instructores() {
 
@@ -114,6 +115,15 @@ public class Instructores {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
+    }
+    
+    
     @Override
     public String toString() {
         return id + " | " + nombre1 + " " + apellido1;

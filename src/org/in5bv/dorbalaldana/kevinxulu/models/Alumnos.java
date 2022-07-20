@@ -18,6 +18,7 @@ public class Alumnos {
     private String nombre3;
     private String apellido1;
     private String apellido2;
+    private int cantidadDatos;
 
     public Alumnos() {
         
@@ -89,6 +90,16 @@ public class Alumnos {
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
+
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
+    }
+    
+    
 
     @Override
     public String toString() {

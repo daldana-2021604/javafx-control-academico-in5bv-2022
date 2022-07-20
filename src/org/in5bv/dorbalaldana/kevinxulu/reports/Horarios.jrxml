@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Plantilla" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f99a396c-0d86-4508-b1c5-51c9624b9748">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Control Academico IN5BV"/>
+	<parameter name="LOGO_HEADER" class="java.lang.String"/>
+	<parameter name="LOGO_HORARIOS" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[CALL sp_horarios_read;]]>
+		<![CDATA[CALL sp_horarios_report();]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -21,30 +23,45 @@
 		<property name="com.jaspersoft.studio.field.label" value="horario_final"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
 	</field>
-	<field name="lunes" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="lunes"/>
-		<property name="com.jaspersoft.studio.field.label" value="lunes"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	<field name="IF(lunes IS TRUE, &quot;Si&quot;, &quot;No&quot;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(lunes IS TRUE, "Si", "No")]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(lunes IS TRUE, "Si", "No")]]>
+		</property>
 	</field>
-	<field name="martes" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="martes"/>
-		<property name="com.jaspersoft.studio.field.label" value="martes"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	<field name="IF (martes IS TRUE, &quot;Si&quot;, &quot;No&quot;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF (martes IS TRUE, "Si", "No")]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF (martes IS TRUE, "Si", "No")]]>
+		</property>
 	</field>
-	<field name="miercoles" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="miercoles"/>
-		<property name="com.jaspersoft.studio.field.label" value="miercoles"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	<field name="IF (miercoles IS TRUE, &quot;Si&quot;, &quot;No&quot;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF (miercoles IS TRUE, "Si", "No")]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF (miercoles IS TRUE, "Si", "No")]]>
+		</property>
 	</field>
-	<field name="jueves" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="jueves"/>
-		<property name="com.jaspersoft.studio.field.label" value="jueves"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	<field name="IF(jueves IS TRUE, &quot;Si&quot;, &quot;No&quot;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(jueves IS TRUE, "Si", "No")]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(jueves IS TRUE, "Si", "No")]]>
+		</property>
 	</field>
-	<field name="viernes" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="viernes"/>
-		<property name="com.jaspersoft.studio.field.label" value="viernes"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="horarios"/>
+	<field name="IF(viernes IS TRUE, &quot;Si&quot;, &quot;No&quot;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name">
+			<![CDATA[IF(viernes IS TRUE, "Si", "No")]]>
+		</property>
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[IF(viernes IS TRUE, "Si", "No")]]>
+		</property>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -53,7 +70,7 @@
 		<band height="125" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="90" height="95" uuid="161c8712-0025-4616-af81-4f7d02936d7e"/>
-				<imageExpression><![CDATA["C:/Users/USUARIO/Documents/NetBeansProjects/in5bv-control-academico-dorbalaldana-KevinXulu/src/org/in5bv/dorbalaldana/kevinxulu/resources/images/Icono.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_HEADER}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="80" y="10" width="400" height="30" uuid="9461203e-b6da-4eb7-9dc7-be8056eb08a1"/>
@@ -83,6 +100,10 @@
 				</textElement>
 				<text><![CDATA[NIT: 365478-9]]></text>
 			</staticText>
+			<image>
+				<reportElement x="480" y="0" width="82" height="95" uuid="6ff78838-ac07-48ec-8834-1b9d2d0937c3"/>
+				<imageExpression><![CDATA[$P{LOGO_HORARIOS}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -107,8 +128,8 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="10" y="0" width="30" height="30" uuid="14c0c763-4903-4505-8fbc-a249891d0d8f">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e8e8e0b3-e1b3-4a86-a57e-10251bdcd011"/>
+				<reportElement x="10" y="0" width="30" height="30" uuid="be0db21b-564c-4ee6-a64b-154ecaed28e8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6454bffb-1722-4ed0-90c0-fc9c02ea531b"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -116,8 +137,8 @@
 				<text><![CDATA[Id]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="0" width="90" height="30" uuid="50ab851e-2d1b-4d41-9bf2-be40675f216a">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9b092bad-ca68-4fc7-b9e6-e1f664f6b42c"/>
+				<reportElement x="50" y="0" width="100" height="30" uuid="38bc6eac-c235-49dd-a242-fadf69aa6152">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="964c508d-d431-4ffb-b598-09f95876101a"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -125,8 +146,8 @@
 				<text><![CDATA[Horario inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="137" y="0" width="100" height="30" uuid="06440cb4-c1ec-4e1e-8bd0-6296a4ff56c6">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51d62076-a778-4912-8877-bd020e87e81e"/>
+				<reportElement x="150" y="0" width="100" height="30" uuid="8fc324b3-d899-4b2c-9681-0238c61593fd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4e634ff7-cae7-4180-9157-d7d8d4286fcb"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -134,8 +155,8 @@
 				<text><![CDATA[Horario final]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="0" width="52" height="30" uuid="3205c3a2-9d47-49a6-a42f-1c1d5d65fde7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02298926-e993-40c7-9243-a036fe1dd42b"/>
+				<reportElement x="250" y="0" width="50" height="30" uuid="62405c24-a85e-4709-ab2b-b8d3a3b232ca">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bfdcb54f-bdc9-4bb4-a368-02c995e2a4c5"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -143,8 +164,8 @@
 				<text><![CDATA[Lunes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="0" width="50" height="30" uuid="6874f5f9-46ab-41a8-9cb2-a44776416a97">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30c80d78-01f3-401d-aa63-fea3492ffa68"/>
+				<reportElement x="300" y="0" width="60" height="30" uuid="0a3e92bf-891c-4893-a7e5-da5f929436f7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7ba4a0c-b9b3-4e2a-ba56-0e85ccd627c3"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -152,8 +173,8 @@
 				<text><![CDATA[Martes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="0" width="60" height="30" uuid="8a9908b7-c745-4d4a-adfe-b5fa553403b0">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64daa3c1-ef09-4658-9852-f0d23e01eaa4"/>
+				<reportElement x="360" y="0" width="70" height="30" uuid="ee052fb7-b524-41d8-b33c-2b0eca435302">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe93f6ee-42a6-4310-82f9-cb3fa870d6ee"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -161,8 +182,8 @@
 				<text><![CDATA[Miercoles]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="0" width="70" height="30" uuid="5038c49d-c7aa-4d0d-ab27-7fcef1999077">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="428a79f1-a91d-4deb-acfa-0072ce450108"/>
+				<reportElement x="430" y="0" width="70" height="30" uuid="9ab20edc-21af-4573-81c6-bd82ab215861">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4db80be-da16-4ff1-b2ea-e441c5e885b1"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -170,8 +191,8 @@
 				<text><![CDATA[Jueves]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="478" y="0" width="100" height="30" uuid="275b26fd-e9f6-4832-a5a1-74229cba83d4">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93fef22b-dc5a-4384-929b-73a534eef1e8"/>
+				<reportElement x="500" y="2" width="100" height="30" uuid="b0b1f297-9323-4897-a6e8-3643345b8b23">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e269a061-081a-4d2b-b00d-c53796e6e4d6"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -181,7 +202,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="65" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<rectangle radius="35">
 				<reportElement mode="Transparent" x="0" y="-10" width="580" height="59" uuid="c215dba7-8589-49a6-b89e-e79f335a2b14"/>
 				<graphicElement>
@@ -189,8 +210,8 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="10" y="4" width="30" height="30" uuid="0776ee2d-a082-43bf-81df-f6cd5773aa55">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e8e8e0b3-e1b3-4a86-a57e-10251bdcd011"/>
+				<reportElement x="10" y="4" width="30" height="30" uuid="d048e25e-29af-4515-bb56-2d36b7dfd85f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6454bffb-1722-4ed0-90c0-fc9c02ea531b"/>
 				</reportElement>
 				<textElement>
 					<font size="12"/>
@@ -198,8 +219,8 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="4" width="90" height="36" uuid="281b0298-4601-4dae-a0da-289439026ad0">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9b092bad-ca68-4fc7-b9e6-e1f664f6b42c"/>
+				<reportElement x="50" y="4" width="100" height="30" uuid="3b5158c5-eb3d-4aa8-a7af-8a5c6ab57fa3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="964c508d-d431-4ffb-b598-09f95876101a"/>
 				</reportElement>
 				<textElement>
 					<font size="12"/>
@@ -207,8 +228,8 @@
 				<textFieldExpression><![CDATA[$F{horario_inicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="138" y="4" width="100" height="36" uuid="e0421b7a-ccc9-410a-921c-d063f4389656">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51d62076-a778-4912-8877-bd020e87e81e"/>
+				<reportElement x="150" y="4" width="100" height="30" uuid="2145566d-4abe-4915-8a2e-d9b1249e8d1c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4e634ff7-cae7-4180-9157-d7d8d4286fcb"/>
 				</reportElement>
 				<textElement>
 					<font size="12"/>
@@ -216,49 +237,34 @@
 				<textFieldExpression><![CDATA[$F{horario_final}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="4" width="50" height="30" uuid="2b1ba2bb-af89-46ef-83a2-0e64637e50b0">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02298926-e993-40c7-9243-a036fe1dd42b"/>
+				<reportElement x="250" y="4" width="50" height="30" uuid="13b59077-7922-4ec4-b6a3-cabba97434ee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bfdcb54f-bdc9-4bb4-a368-02c995e2a4c5"/>
 				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{lunes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{IF(lunes IS TRUE, "Si", "No")}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="4" width="50" height="30" uuid="a32282f0-ce78-4497-9a11-4066ec0837e4">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30c80d78-01f3-401d-aa63-fea3492ffa68"/>
+				<reportElement x="300" y="4" width="60" height="30" uuid="5317fee4-44b0-43c1-93bf-3f98f82e6f1a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7ba4a0c-b9b3-4e2a-ba56-0e85ccd627c3"/>
 				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{martes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{IF (martes IS TRUE, "Si", "No")}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="346" y="4" width="54" height="30" uuid="837cb2f1-9de5-445e-a956-8c3068149051">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="64daa3c1-ef09-4658-9852-f0d23e01eaa4"/>
+				<reportElement x="360" y="4" width="70" height="30" uuid="d8f2b403-af7e-4085-9607-5a73bbf53e94">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe93f6ee-42a6-4310-82f9-cb3fa870d6ee"/>
 				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{miercoles}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{IF (miercoles IS TRUE, "Si", "No")}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="4" width="70" height="30" uuid="9c295138-e7c6-4de8-8ae1-9c425fe86762">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="428a79f1-a91d-4deb-acfa-0072ce450108"/>
+				<reportElement x="430" y="4" width="70" height="30" uuid="e79578c6-62b6-4da9-b045-066d7c124642">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4db80be-da16-4ff1-b2ea-e441c5e885b1"/>
 				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{jueves}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{IF(jueves IS TRUE, "Si", "No")}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="478" y="4" width="100" height="30" uuid="860a1b54-a937-43ce-a592-8810b9aaa9dd">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93fef22b-dc5a-4384-929b-73a534eef1e8"/>
+				<reportElement x="500" y="4" width="100" height="30" uuid="1c1658af-9fae-4d47-b923-9cd647f20654">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e269a061-081a-4d2b-b00d-c53796e6e4d6"/>
 				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{viernes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{IF(viernes IS TRUE, "Si", "No")}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -284,7 +290,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Lucida Bright" size="12"/>
 				</textElement>
-				<text><![CDATA[daldana-202604@kinal.edu.gt]]></text>
+				<text><![CDATA[daldana-2021604@kinal.edu.gt]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

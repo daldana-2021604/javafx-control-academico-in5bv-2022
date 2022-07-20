@@ -28,10 +28,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.jfoenix.controls.JFXDatePicker;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.event.Event;
 import javafx.scene.control.ButtonType;
 import org.in5bv.dorbalaldana.db.Conexion;
 import org.in5bv.dorbalaldana.kevinxulu.models.Instructores;
+import org.in5bv.dorbalaldana.kevinxulu.reports.GenerarReporte;
 import org.in5bv.dorbalaldana.kevinxulu.system.Principal;
 
 
@@ -106,6 +109,9 @@ public class InstructoresController implements Initializable {
     private TableColumn<Instructores, String> colTelefono;
     @FXML
     private TableColumn<Instructores, LocalDate> colFecha;
+    @FXML
+    private TextField txtCantidadDatos;
+    private int contador= 0;
     
     private enum Operacion {
         NINGUNO, GUARDAR, ACTUALIZAR;
@@ -163,6 +169,9 @@ public class InstructoresController implements Initializable {
                 System.out.println(instructor);
 
                 arrayListInstructores.add(instructor);
+                for (int i = 0; i<= arrayListInstructores.size(); i++){
+                    contador = 0+i;
+                }
             }
 
             listaInstructores = FXCollections.observableArrayList(arrayListInstructores);
@@ -192,6 +201,7 @@ public class InstructoresController implements Initializable {
     }
     
     public void cargarDatos(){
+        Instructores instructor = new Instructores();
         tblInstructores.setItems(getInstructores());
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre1.setCellValueFactory(new PropertyValueFactory<>("nombre1"));
@@ -203,6 +213,8 @@ public class InstructoresController implements Initializable {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
+        instructor.setCantidadDatos(contador);
+        txtCantidadDatos.setText(Integer.toString(instructor.getCantidadDatos()));
     }
     
     private boolean existeElementoSeleccionado() {
@@ -679,7 +691,8 @@ public class InstructoresController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        //Finaliza la version no pro
+        /*Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         // cambiar titulo del mensaje:
         alerta.setTitle("AVISO!");
         // cambiar hear:
@@ -692,7 +705,13 @@ public class InstructoresController implements Initializable {
         alerta.setContentText("Esta función solo esta disponible en la versión PRO");
         Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
         stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-        alerta.show();
+        alerta.show();*/
+        
+        //Inicia la version pro
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_INSTRUCTORES", PAQUETE_IMAGES + "Instructores.png");
+        GenerarReporte.getInstance().mostrarReporte("Instructores.jasper", parametros, "Reporte de Instructores");
+        
     }
 
     

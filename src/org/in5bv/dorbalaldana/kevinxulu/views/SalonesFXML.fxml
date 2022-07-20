@@ -199,6 +199,8 @@
                         <Image url="@../resources/images/girar-a-la-izquierda.png" />
                      </image>
                   </ImageView>
+                  <Label layoutX="65.0" layoutY="535.0" prefHeight="17.0" prefWidth="114.0" text="Datos en la tabla:" />
+                  <TextField fx:id="txtCantidadDatos" editable="false" layoutX="164.0" layoutY="531.0" />
                </children>
             </AnchorPane>
          </center>

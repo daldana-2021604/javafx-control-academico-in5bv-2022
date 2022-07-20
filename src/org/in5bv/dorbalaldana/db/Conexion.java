@@ -38,7 +38,7 @@ public class Conexion {
     }
     
     private Conexion(){
-        URL = "jdbc:mysql://" + IP_SERVER + ":" + PORT + "/" + DB;
+        URL = "jdbc:mysql://" + IP_SERVER + ":" + PORT + "/" + DB + "?allowPublicKeyRetrieval=true&serverTimezone=UTC&useSSL=false";
         
         try {
             

@@ -17,12 +17,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.AlumnosContoller;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.AsignacionesAlumnosController;
+import org.in5bv.dorbalaldana.kevinxulu.controllers.AutorController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.MenuPrincipalController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.CarrerasTecnicasController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.CursosController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.HorariosController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.InstructoresController;
 import org.in5bv.dorbalaldana.kevinxulu.controllers.SalonesController;
+import org.in5bv.dorbalaldana.kevinxulu.controllers.AutorController;
+import org.in5bv.dorbalaldana.kevinxulu.controllers.LoginController;
 
 /**
  * 
@@ -54,7 +57,7 @@ public class Principal extends Application{
         // cambiarEscena("MenuPrincipalView.fxml", 1200, 600);
         // cambiarEscena("AlumnosView.fxml", 1200, 600);
         
-        mostrarEscenaPrincipal();
+        mostrarLogin();
     }
     
     
@@ -148,7 +151,8 @@ public class Principal extends Application{
        MenuPrincipalController menuPrincipalController = (MenuPrincipalController)cambiarEscena("MenuPrincipalView.fxml", 1200, 600);
        menuPrincipalController.setEscenarioPrincipal(this);
       }catch (Exception ex){
-          System.err.println("\nSe produjo un error al intentar mostrar la vista Alumnos");
+          System.err.println("\nSe produjo un error al intentar mostrar la vista Menú principal");
+          ex.printStackTrace();
       }
       
     }
@@ -199,6 +203,26 @@ public class Principal extends Application{
         } catch (Exception ex) {
             System.err.println("\nSe ha un producido un error al mostrar la vista de Horarios");
             ex.printStackTrace();
+        }
+    }
+    
+    public void mostrarEscenaAutor(){
+        try {
+            AutorController autorController = (AutorController) cambiarEscena("AutorView.fxml",430,470);
+            autorController.setEscenarioPrincipal(this);
+        } catch (Exception ex) {
+            System.err.println("\nSe ha un producido un error al mostrar la vista de Autor");
+            ex.printStackTrace();
+        }
+    }
+    
+    public void mostrarLogin(){
+        try {
+            LoginController loginController = (LoginController) cambiarEscena("LoginView.fxml", 566,370);
+            loginController.setEscenarioPrincipal(this);
+        } catch (Exception e) {
+            System.err.println("\nSe ha producido un error al mostrar la vista de Login");
+            e.printStackTrace();
         }
     }
     

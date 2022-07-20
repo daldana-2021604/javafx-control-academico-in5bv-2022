@@ -17,6 +17,7 @@ public class Salones {
     private int capacidadMaxima;
     private String edificio;
     private int nivel;
+    private int cantidadDatos;
 
     public Salones() {
     }
@@ -76,6 +77,14 @@ public class Salones {
 
     public void setNivel(int nivel) {
         this.nivel = nivel;
+    }
+
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
     }
 
     @Override

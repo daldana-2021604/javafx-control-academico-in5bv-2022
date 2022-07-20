@@ -3,8 +3,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Plantilla" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f99a396c-0d86-4508-b1c5-51c9624b9748">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Control Academico IN5BV"/>
+	<parameter name="LOGO_HEADER" class="java.lang.String"/>
+	<parameter name="LOGO_SALONES" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[CALL sp_salones_read()]]>
+		<![CDATA[CALL sp_salones_report();]]>
 	</queryString>
 	<field name="codigo_salon" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="codigo_salon"/>
@@ -38,7 +40,7 @@
 		<band height="125" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="90" height="95" uuid="161c8712-0025-4616-af81-4f7d02936d7e"/>
-				<imageExpression><![CDATA["C:/Users/USUARIO/Documents/NetBeansProjects/in5bv-control-academico-dorbalaldana-KevinXulu/src/org/in5bv/dorbalaldana/kevinxulu/resources/images/Icono.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_HEADER}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="80" y="10" width="400" height="30" uuid="9461203e-b6da-4eb7-9dc7-be8056eb08a1"/>
@@ -68,6 +70,10 @@
 				</textElement>
 				<text><![CDATA[NIT: 365478-9]]></text>
 			</staticText>
+			<image>
+				<reportElement x="462" y="0" width="98" height="95" uuid="3965a757-2fb2-4d5f-841a-f931df2ead2f"/>
+				<imageExpression><![CDATA[$P{LOGO_SALONES}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -92,8 +98,8 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="20" y="0" width="100" height="30" uuid="42406c0f-d5d5-4943-9d69-ce05c5103105">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="931f7105-bf38-4113-8f47-994858eebddf"/>
+				<reportElement x="17" y="0" width="100" height="30" uuid="9e6e48fe-5e9b-4ad6-a005-4a5b11262f16">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9619e9c0-fc3f-40c6-8056-9fe193c75e4a"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -101,8 +107,8 @@
 				<text><![CDATA[Codigo salon]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="0" width="130" height="30" uuid="f06a01bc-60ce-4e4d-871a-f504b8f36485">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8f7394f-6f24-4ffc-aeb9-fc662e702239"/>
+				<reportElement x="120" y="0" width="140" height="30" uuid="450c32ca-74c6-4897-acd4-4644735183b1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6d9450fc-c7dd-4ee2-bf00-fa9694b55496"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -110,8 +116,8 @@
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="260" y="0" width="120" height="30" uuid="88102a1c-f8af-46cd-8e69-31cdb15ad59f">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="55a23392-d69f-4c43-a951-996dfd4705df"/>
+				<reportElement x="260" y="0" width="130" height="30" uuid="38cb9a51-1850-402c-a603-0bd30e4e250e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="124a577c-6454-4302-9bc7-9ccc09a91a34"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -119,8 +125,8 @@
 				<text><![CDATA[Capacidad maxima]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="390" y="0" width="100" height="30" uuid="98425ca2-57fd-452e-be89-cb5c87ad49a1">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f239fcda-470f-4792-8588-ba217f6f2626"/>
+				<reportElement x="390" y="0" width="70" height="30" uuid="f6c98de0-34bc-4893-8346-4165543cf0b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="645ece8d-caa5-4804-b555-413e70dd86b8"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -128,8 +134,8 @@
 				<text><![CDATA[Edificio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="0" width="100" height="30" uuid="738d992f-7553-4866-8521-2a32a975fd3a">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8c7a913-f748-4bf0-9a27-ae8da12190ad"/>
+				<reportElement x="462" y="0" width="100" height="30" uuid="43fec3b4-0aa5-4459-9a80-fb452535b74e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="419a1384-d834-47ea-8c73-f9e32e691094"/>
 				</reportElement>
 				<textElement>
 					<font size="14"/>
@@ -147,8 +153,8 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="10" y="8" width="100" height="30" uuid="2520e7e0-56f8-4218-b84f-60c9838c512f">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="931f7105-bf38-4113-8f47-994858eebddf"/>
+				<reportElement x="17" y="10" width="100" height="30" uuid="0bc592ae-eed2-4a7b-9f79-f66924f53bf0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9619e9c0-fc3f-40c6-8056-9fe193c75e4a"/>
 				</reportElement>
 				<textElement>
 					<font size="12"/>
@@ -156,38 +162,38 @@
 				<textFieldExpression><![CDATA[$F{codigo_salon}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="8" width="130" height="30" uuid="0c354e70-ff2b-441d-b714-ebdfa0c65451">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8f7394f-6f24-4ffc-aeb9-fc662e702239"/>
+				<reportElement x="120" y="10" width="140" height="30" uuid="d368d383-da1e-4ef8-9fa2-bbb0cd9fe79f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6d9450fc-c7dd-4ee2-bf00-fa9694b55496"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="8" width="70" height="30" uuid="c624b6bc-24ba-4e19-82c7-8a682ef01e72">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="55a23392-d69f-4c43-a951-996dfd4705df"/>
+				<reportElement x="290" y="10" width="70" height="30" uuid="72263fbc-582d-4856-b514-761077522dd3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="124a577c-6454-4302-9bc7-9ccc09a91a34"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{capacidad_maxima}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="8" width="100" height="30" uuid="975d66c0-36d7-4924-8626-4e57d6757a1a">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f239fcda-470f-4792-8588-ba217f6f2626"/>
+				<reportElement x="390" y="10" width="70" height="30" uuid="453d2c68-2051-4af2-ac28-4f5241319c6a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="645ece8d-caa5-4804-b555-413e70dd86b8"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{edificio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="490" y="8" width="100" height="30" uuid="deaa8b52-e600-46f6-8047-24c331cead10">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8c7a913-f748-4bf0-9a27-ae8da12190ad"/>
+				<reportElement x="460" y="10" width="100" height="30" uuid="fdd4856f-e555-4a08-9f0d-c365635c9c74">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="419a1384-d834-47ea-8c73-f9e32e691094"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nivel}]]></textFieldExpression>
 			</textField>
@@ -215,7 +221,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Lucida Bright" size="12"/>
 				</textElement>
-				<text><![CDATA[daldana-202604@kinal.edu.gt]]></text>
+				<text><![CDATA[daldana-2021604@kinal.edu.gt]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

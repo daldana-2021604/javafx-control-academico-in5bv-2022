@@ -1,4 +1,3 @@
-
 package org.in5bv.dorbalaldana.kevinxulu.controllers;
 
 import com.mysql.cj.jdbc.result.ResultSetFactory;
@@ -28,9 +27,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 
 import org.in5bv.dorbalaldana.db.Conexion;
 import org.in5bv.dorbalaldana.kevinxulu.models.Cursos;
@@ -38,12 +38,12 @@ import org.in5bv.dorbalaldana.kevinxulu.models.CarrerasTecnicas;
 import org.in5bv.dorbalaldana.kevinxulu.models.Horarios;
 import org.in5bv.dorbalaldana.kevinxulu.models.Instructores;
 import org.in5bv.dorbalaldana.kevinxulu.models.Salones;
+import org.in5bv.dorbalaldana.kevinxulu.reports.GenerarReporte;
 import org.in5bv.dorbalaldana.kevinxulu.system.Principal;
 
-
 /**
- * 
- * 
+ *
+ *
  * @author Dorbal Emilio Aldana Ramos 2021604
  * @date 2/06/2022
  * @time 16:38:10 Código técnico: IN5BV Grupo: 1 (Jueves)
@@ -53,7 +53,7 @@ public class CursosController implements Initializable {
     private enum Operacion {
         NINGUNO, GUARDAR, ACTUALIZAR;
     }
-    
+
     private final String PAQUETE_IMAGES = "org/in5bv/dorbalaldana/kevinxulu/resources/images/";
 
     private Operacion operacion = Operacion.NINGUNO;
@@ -62,9 +62,9 @@ public class CursosController implements Initializable {
     private ObservableList<CarrerasTecnicas> listaObservableCarrerasTecnicas;
     private ObservableList<Salones> listaObservableSalones;
     private ObservableList<Horarios> listaObservableHorarios;
-    
+
     private Principal escenarioPrincipal;
-    
+
     @FXML
     private Button btnNuevo;
     @FXML
@@ -124,33 +124,36 @@ public class CursosController implements Initializable {
     private TableColumn<Cursos, String> colSalon;
     @FXML
     private ImageView imgRegresar;
-    
+    @FXML
+    private TextField txtCantidadDatos;
+
+    private int contador = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         valueFactoryCiclo = new SpinnerValueFactory.IntegerSpinnerValueFactory(2020, 2050, 2022);
         spnCiclo.setValueFactory(valueFactoryCiclo);
-        
+
         valueFactoyMaximo = new SpinnerValueFactory.IntegerSpinnerValueFactory(11, 50, 20);
         spnMaximo.setValueFactory(valueFactoyMaximo);
-        
+
         valueFactoyMinimo = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 5);
         spnMinimo.setValueFactory(valueFactoyMinimo);
-        
+
         cargarDatos();
     }
-    
+
     public void setEscenarioPrincipal(Principal escenarioPrincipal) {
         this.escenarioPrincipal = escenarioPrincipal;
     }
-    
+
     private void habilitarCampos() {
         txtId.setEditable(true);
         txtNombreCurso.setEditable(true);
         spnCiclo.setEditable(true);
         spnMaximo.setEditable(true);
         spnMinimo.setEditable(true);
-
 
         txtId.setDisable(false);
         txtNombreCurso.setDisable(false);
@@ -201,7 +204,7 @@ public class CursosController implements Initializable {
         cmbInstructor.valueProperty().set(null);
         cmbSalon.valueProperty().set(null);
     }
-    
+
     // read -> listar los registros
     private ObservableList getCursos() {
         ArrayList<Cursos> arrayListCursos = new ArrayList<>();
@@ -231,6 +234,10 @@ public class CursosController implements Initializable {
                 System.out.println(curso.toString());
 
                 arrayListCursos.add(curso);
+
+                for (int i = 0; i <= arrayListCursos.size(); i++) {
+                    contador = 0 + i;
+                }
             }
 
             listaObservableCursos = FXCollections.observableArrayList(arrayListCursos);
@@ -258,56 +265,56 @@ public class CursosController implements Initializable {
 
         return listaObservableCursos;
     }
-    
-    public ObservableList getCarrerasTecnicas(){
+
+    public ObservableList getCarrerasTecnicas() {
         ArrayList<CarrerasTecnicas> lista = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try {
             //stmt = Conexion.getInstance().getConexion().createStatement();
             pstmt = Conexion.getInstance().getConexion().prepareCall("CALL sp_carreras_tecnicas_read");
             rs = pstmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 CarrerasTecnicas carreras = new CarrerasTecnicas();
                 carreras.setCodigoTecnico(rs.getString(1));
                 carreras.setCarrera(rs.getString(2));
                 carreras.setGrado(rs.getString(3));
                 carreras.setSeccion((rs.getString(4)));
-                carreras.setJornada(rs.getString(5)); 
+                carreras.setJornada(rs.getString(5));
                 System.out.println(carreras.toString());
-                
-               lista.add(carreras);
-                
+
+                lista.add(carreras);
+
             }
-            
+
             listaObservableCarrerasTecnicas = FXCollections.observableArrayList(lista);
-            
+
         } catch (SQLException e) {
             System.err.println("Se produjo un error al intentar listar la tabla de carreras tecnicas");
             System.err.println("Message: " + e.getMessage());
             System.err.println("Error code: " + e.getErrorCode());
             System.err.println("SQLState: " + e.getSQLState());
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-            
+        } finally {
+
             try {
                 if (rs != null) {
                     rs.close();
                 }
                 if (pstmt != null) {
                     pstmt.close();
-                }  
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
         return listaObservableCarrerasTecnicas;
     }
-    
+
     public ObservableList getInstructores() {
         ArrayList<Instructores> lista = new ArrayList<>();
         PreparedStatement pstmt = null;
@@ -362,17 +369,17 @@ public class CursosController implements Initializable {
         }
         return listaObservableInstructores;
     }
-    
-    public ObservableList getSalones(){
+
+    public ObservableList getSalones() {
         ArrayList<Salones> lista = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try {
             //stmt = Conexion.getInstance().getConexion().createStatement();
             pstmt = Conexion.getInstance().getConexion().prepareCall("CALL sp_salones_read()");
             rs = pstmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Salones salon = new Salones();
                 salon.setCodigoSalon(rs.getString(1));
                 salon.setDescripcion(rs.getString(2));
@@ -380,38 +387,38 @@ public class CursosController implements Initializable {
                 salon.setEdificio(rs.getString(4));
                 salon.setNivel(rs.getInt(5));
                 System.out.println(salon.toString());
-                
-               lista.add(salon);
-                
+
+                lista.add(salon);
+
             }
-            
+
             listaObservableSalones = FXCollections.observableArrayList(lista);
-            
+
         } catch (SQLException e) {
             System.err.println("Se produjo un error al intentar listar la tabla de carreras tecnicas");
             System.err.println("Message: " + e.getMessage());
             System.err.println("Error code: " + e.getErrorCode());
             System.err.println("SQLState: " + e.getSQLState());
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-            
+        } finally {
+
             try {
                 if (rs != null) {
                     rs.close();
                 }
                 if (pstmt != null) {
                     pstmt.close();
-                }  
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
         return listaObservableSalones;
     }
-    
+
     private ObservableList getHorarios() {
         ArrayList<Horarios> arrayListHorarios = new ArrayList<>();
         PreparedStatement pstmt = null;
@@ -454,10 +461,9 @@ public class CursosController implements Initializable {
         }
         return listaObservableHorarios;
     }
-    
-    
-    
-    public void cargarDatos(){
+
+    public void cargarDatos() {
+        Cursos curso = new Cursos();
         tblCursos.setItems(getCursos());
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombreCurso.setCellValueFactory(new PropertyValueFactory<>("nombreCurso"));
@@ -468,36 +474,36 @@ public class CursosController implements Initializable {
         colHorario.setCellValueFactory(new PropertyValueFactory<>("horarioId"));
         colInstructor.setCellValueFactory(new PropertyValueFactory<>("instructorId"));
         colSalon.setCellValueFactory(new PropertyValueFactory<>("salonId"));
-        
+
         cmbCarreraTecnica.setItems(getCarrerasTecnicas());
         cmbHorario.setItems(getHorarios());
         cmbInstructor.setItems(getInstructores());
         cmbSalon.setItems(getSalones());
+        curso.setCantidadDatos(contador);
+        txtCantidadDatos.setText(Integer.toString(curso.getCantidadDatos()));
     }
-    
+
     private boolean agregarCursos() {
-        
+
         Cursos curso = new Cursos();
-        
+
         //curso.setId(Integer.parseInt(txtId.getText()));
-        
         curso.setNombreCurso(txtNombreCurso.getText());
         curso.setCiclo(spnCiclo.getValue());
         curso.setCupoMaximo(spnMaximo.getValue());
         curso.setCupoMinimo(spnMinimo.getValue());
-        
+
         curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica
                 .getSelectionModel().getSelectedItem()).getCodigoTecnico());
-        
+
         curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel()
                 .getSelectedItem()).getId());
-        
+
         curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel()
                 .getSelectedItem()).getId());
-        
+
         curso.setSalonId(((Salones) cmbSalon.getSelectionModel()
                 .getSelectedItem()).getCodigoSalon());
-        
 
         PreparedStatement pstmt = null;
 
@@ -537,32 +543,31 @@ public class CursosController implements Initializable {
 
         return false;
     }
-    
-    public boolean actualizarCursos(){
-        
+
+    public boolean actualizarCursos() {
+
         Cursos curso = new Cursos();
         curso.setId(Integer.parseInt(txtId.getText()));
-        
+
         curso.setNombreCurso(txtNombreCurso.getText());
         curso.setCiclo(spnCiclo.getValue());
         curso.setCupoMaximo(spnMaximo.getValue());
         curso.setCupoMinimo(spnMinimo.getValue());
-        
+
         curso.setCarreraTecnicaId(((CarrerasTecnicas) cmbCarreraTecnica
                 .getSelectionModel().getSelectedItem()).getCodigoTecnico());
-        
+
         curso.setHorarioId(((Horarios) cmbHorario.getSelectionModel()
                 .getSelectedItem()).getId());
-        
+
         curso.setIntructorId(((Instructores) cmbInstructor.getSelectionModel()
                 .getSelectedItem()).getId());
-        
+
         curso.setSalonId(((Salones) cmbSalon.getSelectionModel()
                 .getSelectedItem()).getCodigoSalon());
-        
 
         PreparedStatement pstmt = null;
-        
+
         try {
             pstmt = Conexion.getInstance().getConexion()
                     .prepareCall("{CALL sp_cursos_update(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
@@ -600,7 +605,7 @@ public class CursosController implements Initializable {
 
         return false;
     }
-    
+
     public boolean eliminarCursos() {
         if (existeElementoSeleccionado()) {
             Cursos curso = (Cursos) tblCursos.getSelectionModel().getSelectedItem();
@@ -612,11 +617,11 @@ public class CursosController implements Initializable {
 
                 pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_cursos_delete(?)}");
                 System.out.println(pstmt.toString());
-                
+
                 pstmt.setInt(1, curso.getId());
                 System.out.println(pstmt);
                 pstmt.execute();
-                
+
                 listaObservableCursos.remove(tblCursos.getSelectionModel().getSelectedItem());
                 return true;
 
@@ -637,7 +642,7 @@ public class CursosController implements Initializable {
         }
         return false;
     }
-    
+
     private boolean camposObligatoriosVacios() {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Control Accademico");
@@ -668,14 +673,279 @@ public class CursosController implements Initializable {
             alerta.show();
             return true;
         }
-        
+
         return false;
     }
-    
-    public boolean existeElementoSeleccionado(){
+
+    public boolean existeElementoSeleccionado() {
         return (tblCursos.getSelectionModel().getSelectedItem() != null);
     }
-    
+
+    @FXML
+    private void seleccionarElemento() {
+        if (existeElementoSeleccionado()) {
+            txtId.setText(String.valueOf(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getId()));
+            txtNombreCurso.setText(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getNombreCurso());
+            cmbCarreraTecnica.getSelectionModel().select(buscarCarrerasTecnicas(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCarreraTecnicaId()));
+            cmbHorario.getSelectionModel().select(buscarHorarios(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getHorarioId()));
+            cmbInstructor.getSelectionModel().select(buscarInstructor(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getInstructorId()));
+            cmbSalon.getSelectionModel().select(buscarSalon(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getSalonId()));
+        }
+    }
+
+    public Cursos buscarCurso(int id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Cursos curso = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_cursos_read_by_id(?)}");
+            pstmt.setInt(1, id);
+            System.out.println(pstmt.toString());
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                curso = new Cursos(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getString(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
+
+            }
+            System.out.println(curso.toString());
+        } catch (SQLException e) {
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return curso;
+    }
+
+    private CarrerasTecnicas buscarCarrerasTecnicas(String id) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        CarrerasTecnicas carrera = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_carreras_tecnicas_read_by_id(?)}");
+
+            pstmt.setString(1, id);
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                carrera = new CarrerasTecnicas(
+                        rs.getString("codigo_tecnico"),
+                        rs.getString("carrera"),
+                        rs.getString("grado"),
+                        rs.getString("seccion"),
+                        rs.getString("jornada")
+                );
+
+                System.out.println(carrera.toString());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Carrera");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return carrera;
+    }
+
+    private Horarios buscarHorarios(int id) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Horarios horario = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_horarios_read_by_id(?)}");
+
+            pstmt.setInt(1, id);
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                horario = new Horarios(
+                        rs.getInt("id"),
+                        rs.getTime("horario_inicio").toLocalTime(),
+                        rs.getTime("horario_final").toLocalTime(),
+                        rs.getBoolean("lunes"),
+                        rs.getBoolean("martes"),
+                        rs.getBoolean("miercoles"),
+                        rs.getBoolean("jueves"),
+                        rs.getBoolean("viernes")
+                );
+
+                System.out.println(horario.toString());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Horarios");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return horario;
+    }
+
+    private Instructores buscarInstructor(int id) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Instructores instructor = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_instructores_read_by_id(?)}");
+
+            pstmt.setInt(1, id);
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                instructor = new Instructores(
+                        rs.getInt("id"),
+                        rs.getString("nombre1"),
+                        rs.getString("nombre2"),
+                        rs.getString("nombre3"),
+                        rs.getString("apellido1"),
+                        rs.getString("apellido2"),
+                        rs.getString("direccion"),
+                        rs.getString("email"),
+                        rs.getString("telefono"),
+                        rs.getDate("fecha_nacimiento").toLocalDate()
+                );
+
+                System.out.println(instructor.toString());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Instructores");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return instructor;
+    }
+
+    private Salones buscarSalon(String id) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Salones salon = null;
+
+        try {
+            pstmt = Conexion.getInstance().getConexion()
+                    .prepareCall("{CALL sp_salones_read_by_id(?)}");
+
+            pstmt.setString(1, id);
+
+            System.out.println(pstmt.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                salon = new Salones(
+                        rs.getString("codigo_salon"),
+                        rs.getString("descripcion"),
+                        rs.getInt("capacidad_maxima"),
+                        rs.getString("edificio"),
+                        rs.getInt("nivel")
+                );
+
+                System.out.println(salon.toString());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nSe produjo un error al intentar listar la tabla de Salones");
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("SQLState: " + e.getSQLState());
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return salon;
+    }
 
     @FXML
     private void clicNuevo() {
@@ -706,7 +976,7 @@ public class CursosController implements Initializable {
                 operacion = Operacion.GUARDAR;
                 break;
             case GUARDAR:
-                if(camposObligatoriosVacios() == false){
+                if (camposObligatoriosVacios() == false) {
                     if (agregarCursos()) {
                         limpiarCampos();
                         deshabilitarCampos();
@@ -729,7 +999,7 @@ public class CursosController implements Initializable {
                         operacion = Operacion.NINGUNO;
                     }
                 }
-                
+
                 break;
 
         }
@@ -791,7 +1061,7 @@ public class CursosController implements Initializable {
                 break;
 
             case ACTUALIZAR:
-                if(camposObligatoriosVacios() == false){
+                if (camposObligatoriosVacios() == false) {
                     if (actualizarCursos()) {
                         limpiarCampos();
                         deshabilitarCampos();
@@ -812,7 +1082,7 @@ public class CursosController implements Initializable {
 
                     }
                 }
-                
+
                 break;
 
         }
@@ -828,13 +1098,13 @@ public class CursosController implements Initializable {
                     alert.setTitle("Control Académico Kinal");
                     alert.setHeaderText(null);
                     alert.setContentText("¿Esta seguro que quiere eliminar el registro selecionado?");
-                    
+
                     Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                     stage.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-                    
+
                     Optional<ButtonType> result = alert.showAndWait();
-                    
-                    if(result.get().equals(ButtonType.OK)){
+
+                    if (result.get().equals(ButtonType.OK)) {
                         if (eliminarCursos()) {
 
                             listaObservableCursos.remove(tblCursos.getSelectionModel().getFocusedIndex());
@@ -847,17 +1117,15 @@ public class CursosController implements Initializable {
                             alertInformation.setHeaderText(null);
                             alertInformation.setContentText("Se elimino el registro exitosamente");
                             alertInformation.show();
-                            
-                            
+
                         }
-                    }else {
+                    } else {
                         alert.close();
                         limpiarCampos();
                         tblCursos.getSelectionModel().clearSelection();
                     }
-                    
 
-                }else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Control Académico Kinal");
                     alert.setHeaderText(null);
@@ -883,7 +1151,7 @@ public class CursosController implements Initializable {
 
                 limpiarCampos();
                 deshabilitarCampos();
-                
+
                 tblCursos.getSelectionModel().clearSelection();
 
                 operacion = Operacion.NINGUNO;
@@ -893,7 +1161,7 @@ public class CursosController implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        /*Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         // cambiar titulo del mensaje:
         alerta.setTitle("AVISO!");
         // cambiar hear:
@@ -906,283 +1174,24 @@ public class CursosController implements Initializable {
         alerta.setContentText("Esta función solo esta disponible en la versión PRO");
         Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
         stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-        alerta.show();
-
-        
-
-    }
-
-    @FXML
-    private void seleccionarElemento() {
-        if(existeElementoSeleccionado()){
-            txtId.setText(String.valueOf(((Cursos)tblCursos.getSelectionModel().getSelectedItem()).getId()));
-            txtNombreCurso.setText(((Cursos)tblCursos.getSelectionModel().getSelectedItem()).getNombreCurso());
-            cmbCarreraTecnica.getSelectionModel().select(buscarCarrerasTecnicas(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getCarreraTecnicaId()));
-            cmbHorario.getSelectionModel().select( buscarHorarios(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getHorarioId()));
-            cmbInstructor.getSelectionModel().select(buscarInstructor(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getInstructorId()));cmbSalon.getSelectionModel().select(buscarSalon(((Cursos) tblCursos.getSelectionModel().getSelectedItem()).getSalonId()));
-        }
-    }
-    
-    public Cursos buscarCurso(int id){
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Cursos curso = null;
-        
-        try {
-            pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_cursos_read_by_id(?)}");
-            pstmt.setInt(1, id);
-            System.out.println(pstmt.toString());
-            rs = pstmt.executeQuery();
-            
-            while(rs.next()){
-                curso = new Cursos(rs.getInt(1), rs.getString(2),rs.getInt(3),rs.getInt(4), rs.getInt(5), rs.getString(6), rs.getInt(7),rs.getInt(8),rs.getString(9));
-                
-            }
-            System.out.println(curso.toString());
-        } catch (SQLException e) {
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Error code: " + e.getErrorCode());
-            System.err.println("SQLState: " + e.getSQLState());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return curso;
-    }
-    
-     private CarrerasTecnicas buscarCarrerasTecnicas(String id) {
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        CarrerasTecnicas carrera = null;
-
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_carreras_tecnicas_read_by_id(?)}");
-
-            pstmt.setString(1, id);
-
-            System.out.println(pstmt.toString());
-
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                carrera = new CarrerasTecnicas(
-                        rs.getString("codigo_tecnico"),
-                        rs.getString("carrera"),
-                        rs.getString("grado"),
-                        rs.getString("seccion"),
-                        rs.getString("jornada")
-                );
-
-                System.out.println(carrera.toString());
-            }
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar listar la tabla de Carrera");
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Error code: " + e.getErrorCode());
-            System.err.println("SQLState: " + e.getSQLState());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        alerta.show();*/
+        if (existeElementoSeleccionado() != false) {
+            Cursos curso = (Cursos) tblCursos.getSelectionModel().getSelectedItem();
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("LOGO_ASIGNACIONES", PAQUETE_IMAGES + "Cursos.png");
+            parametros.put("idCurso", curso.getId());
+            GenerarReporte.getInstance().mostrarReporte("CursosPorId.jasper", parametros, "Reporte de cursos por id");
+        } else {
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("LOGO_CURSOS", PAQUETE_IMAGES + "Cursos.png");
+            GenerarReporte.getInstance().mostrarReporte("Cursos.jasper", parametros, "Reporte de cursos");
         }
 
-        return carrera;
     }
-     
-    private Horarios buscarHorarios(int id) {
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Horarios horario = null;
-
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_horarios_read_by_id(?)}");
-
-            pstmt.setInt(1, id);
-
-            System.out.println(pstmt.toString());
-
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                
-                horario = new Horarios(
-                        rs.getInt("id"), 
-                        rs.getTime("horario_inicio").toLocalTime(), 
-                        rs.getTime("horario_final").toLocalTime(), 
-                        rs.getBoolean("lunes"), 
-                        rs.getBoolean("martes"), 
-                        rs.getBoolean("miercoles"), 
-                        rs.getBoolean("jueves"), 
-                        rs.getBoolean("viernes")
-                );
-
-                System.out.println(horario.toString());
-            }
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar listar la tabla de Horarios");
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Error code: " + e.getErrorCode());
-            System.err.println("SQLState: " + e.getSQLState());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return horario;
-    }
-    
-    
-    private Instructores buscarInstructor(int id) {
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Instructores instructor = null;
-
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_instructores_read_by_id(?)}");
-
-            pstmt.setInt(1, id);
-
-            System.out.println(pstmt.toString());
-
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                
-                instructor = new Instructores(
-                        rs.getInt("id"), 
-                        rs.getString("nombre1"), 
-                        rs.getString("nombre2"), 
-                        rs.getString("nombre3"), 
-                        rs.getString("apellido1"), 
-                        rs.getString("apellido2"), 
-                        rs.getString("direccion"), 
-                        rs.getString("email"), 
-                        rs.getString("telefono"), 
-                        rs.getDate("fecha_nacimiento").toLocalDate()
-                );
-
-                System.out.println(instructor.toString());
-            }
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar listar la tabla de Instructores");
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Error code: " + e.getErrorCode());
-            System.err.println("SQLState: " + e.getSQLState());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return instructor;
-    }
-    
-    
-    private Salones buscarSalon(String id) {
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Salones salon = null;
-
-        try {
-            pstmt = Conexion.getInstance().getConexion()
-                    .prepareCall("{CALL sp_salones_read_by_id(?)}");
-
-            pstmt.setString(1, id);
-
-            System.out.println(pstmt.toString());
-
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                
-                salon = new Salones(
-                        rs.getString("codigo_salon"), 
-                        rs.getString("descripcion"), 
-                        rs.getInt("capacidad_maxima"), 
-                        rs.getString("edificio"), 
-                        rs.getInt("nivel")
-                );
-
-                System.out.println(salon.toString());
-            }
-        } catch (SQLException e) {
-            System.err.println("\nSe produjo un error al intentar listar la tabla de Salones");
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Error code: " + e.getErrorCode());
-            System.err.println("SQLState: " + e.getSQLState());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return salon;
-    }    
-
 
     @FXML
     void clicRegresar(MouseEvent event) {
         escenarioPrincipal.mostrarEscenaPrincipal();
     }
-    
+
 }

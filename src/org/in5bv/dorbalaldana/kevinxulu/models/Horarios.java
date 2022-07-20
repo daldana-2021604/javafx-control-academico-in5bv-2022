@@ -22,6 +22,7 @@ public class Horarios {
     private boolean miercoles;
     private boolean jueves;
     private boolean viernes;
+    private int cantidadDatos;
 
 
     public Horarios() {
@@ -92,6 +93,13 @@ public class Horarios {
         this.viernes = viernes;
     }
 
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
+    }
     
 
     public Horarios(int id, LocalTime horarioInicio, LocalTime horarioFinal, boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes) {

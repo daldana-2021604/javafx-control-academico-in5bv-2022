@@ -16,6 +16,7 @@ public class CarrerasTecnicas {
     private String grado;
     private String seccion;
     private String jornada;
+    private int cantidadDatos;
 
     public CarrerasTecnicas() {
     }
@@ -72,6 +73,14 @@ public class CarrerasTecnicas {
         this.jornada = jornada;
     }
 
+    public int getCantidadDatos() {
+        return cantidadDatos;
+    }
+
+    public void setCantidadDatos(int cantidadDatos) {
+        this.cantidadDatos = cantidadDatos;
+    }
+    
     @Override
     public String toString() {
         return codigoTecnico + " | "+ carrera + " | " + grado +" | " +seccion + " | "  + jornada;

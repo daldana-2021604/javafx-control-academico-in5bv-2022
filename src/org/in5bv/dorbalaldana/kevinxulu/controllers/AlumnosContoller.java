@@ -28,12 +28,15 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.in5bv.dorbalaldana.db.Conexion;
+import org.in5bv.dorbalaldana.kevinxulu.reports.GenerarReporte;
 
 public class AlumnosContoller implements Initializable {
 
@@ -66,6 +69,9 @@ public class AlumnosContoller implements Initializable {
 
     @FXML
     private TextField txtApellido2;
+
+    @FXML
+    private TextField txtCantidadDatos;
 
     @FXML
     private Button btnNuevo;
@@ -115,6 +121,8 @@ public class AlumnosContoller implements Initializable {
     @FXML
     private ImageView imgReporte;
 
+    private int contador = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // getAlumnos();
@@ -142,6 +150,10 @@ public class AlumnosContoller implements Initializable {
                 System.out.println(alumno.toString());
 
                 lista.add(alumno);
+
+                for (int i = 0; i <= lista.size(); i++) {
+                    contador = 0 + i;
+                }
 
             }
 
@@ -173,6 +185,7 @@ public class AlumnosContoller implements Initializable {
     }
 
     public void cargarDatos() {
+        Alumnos alumnos = new Alumnos();
         tblAlumnos.setItems(getAlumnos());
         colCarne.setCellValueFactory(new PropertyValueFactory<Alumnos, String>("carne"));
         colNombre1.setCellValueFactory(new PropertyValueFactory<Alumnos, String>("nombre1"));
@@ -180,6 +193,8 @@ public class AlumnosContoller implements Initializable {
         colNombre3.setCellValueFactory(new PropertyValueFactory<Alumnos, String>("nombre3"));
         colApellido1.setCellValueFactory(new PropertyValueFactory<Alumnos, String>("apellido1"));
         colApellido2.setCellValueFactory(new PropertyValueFactory<Alumnos, String>("apellido2"));
+        alumnos.setCantidadDatos(contador);
+        txtCantidadDatos.setText(Integer.toString(alumnos.getCantidadDatos()));
     }
 
     private boolean existeElementoSeleccionado() {
@@ -199,8 +214,6 @@ public class AlumnosContoller implements Initializable {
 
     }
 
-    
-
     public Principal getEscenarioPrincipal() {
         return escenarioPrincipal;
     }
@@ -208,8 +221,6 @@ public class AlumnosContoller implements Initializable {
     public void setEscenarioPrincipal(Principal escenarioPrincipal) {
         this.escenarioPrincipal = escenarioPrincipal;
     }
-    
-    
 
     private void habilitarCampos() {
         txtCarne.setEditable(true);
@@ -256,7 +267,7 @@ public class AlumnosContoller implements Initializable {
         txtApellido1.clear();
         txtApellido2.clear();
     }
-    
+
     private boolean camposObligatoriosVacios() {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Control Accademico");
@@ -277,10 +288,10 @@ public class AlumnosContoller implements Initializable {
             alerta.show();
             return true;
         }
-        
+
         return false;
     }
-    
+
     public boolean eliminarAlumno() {
         if (existeElementoSeleccionado()) {
             Alumnos alumno = (Alumnos) tblAlumnos.getSelectionModel().getSelectedItem();
@@ -292,7 +303,7 @@ public class AlumnosContoller implements Initializable {
 
                 pstmt = Conexion.getInstance().getConexion().prepareCall("{CALL sp_alumnos_delete(?)}");
                 System.out.println(pstmt.toString());
-                
+
                 pstmt.setString(1, alumno.getCarne());
                 System.out.println(pstmt);
                 pstmt.execute();
@@ -433,7 +444,7 @@ public class AlumnosContoller implements Initializable {
                 operacion = Operacion.GUARDAR;
                 break;
             case GUARDAR:
-                if(camposObligatoriosVacios() == false){
+                if (camposObligatoriosVacios() == false) {
                     if (agregarAlumno()) {
                         limpiarCampos();
                         deshabilitarCampos();
@@ -456,7 +467,7 @@ public class AlumnosContoller implements Initializable {
                         operacion = Operacion.NINGUNO;
                     }
                 }
-                
+
                 break;
 
         }
@@ -518,7 +529,7 @@ public class AlumnosContoller implements Initializable {
                 break;
 
             case ACTUALIZAR:
-                if(camposObligatoriosVacios() == false){
+                if (camposObligatoriosVacios() == false) {
                     if (actualizarAlumno()) {
                         limpiarCampos();
                         deshabilitarCampos();
@@ -539,7 +550,7 @@ public class AlumnosContoller implements Initializable {
 
                     }
                 }
-                
+
                 break;
 
         }
@@ -555,13 +566,13 @@ public class AlumnosContoller implements Initializable {
                     alert.setTitle("Control Académico Kinal");
                     alert.setHeaderText(null);
                     alert.setContentText("¿Esta seguro que quiere eliminar el registro selecionado?");
-                    
+
                     Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                     stage.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-                    
+
                     Optional<ButtonType> result = alert.showAndWait();
-                    
-                    if(result.get().equals(ButtonType.OK)){
+
+                    if (result.get().equals(ButtonType.OK)) {
                         if (eliminarAlumno()) {
 
                             listaAlumnos.remove(tblAlumnos.getSelectionModel().getFocusedIndex());
@@ -574,17 +585,15 @@ public class AlumnosContoller implements Initializable {
                             alertInformation.setHeaderText(null);
                             alertInformation.setContentText("Se elimino el registro exitosamente");
                             alertInformation.show();
-                            
-                            
+
                         }
-                    }else {
+                    } else {
                         alert.close();
                         limpiarCampos();
                         tblAlumnos.getSelectionModel().clearSelection();
                     }
-                    
 
-                }else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Control Académico Kinal");
                     alert.setHeaderText(null);
@@ -610,7 +619,7 @@ public class AlumnosContoller implements Initializable {
 
                 limpiarCampos();
                 deshabilitarCampos();
-                
+
                 tblAlumnos.getSelectionModel().clearSelection();
 
                 operacion = Operacion.NINGUNO;
@@ -620,22 +629,10 @@ public class AlumnosContoller implements Initializable {
 
     @FXML
     private void clicReporte() {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        // cambiar titulo del mensaje:
-        alerta.setTitle("AVISO!");
-        // cambiar hear:
-        // alerta.setHeaderText("Control Académico kinal");
-        // eliminar hear:
-        // alerta.setHeaderText(null);
-        // O
-        alerta.setHeaderText("");
-        // Contenido del mensaje:
-        alerta.setContentText("Esta función solo esta disponible en la versión PRO");
-        Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
-        stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-        alerta.show();
-
-        
+        // Generacion del reporte.
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_ALUMNOS", PAQUETE_IMAGES + "estudiante-con-gorro-de-graduacion.png");
+        GenerarReporte.getInstance().mostrarReporte("Alumnos.jasper", parametros, "Reporte de alumnos");
 
     }
 

@@ -24,6 +24,9 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +34,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.in5bv.dorbalaldana.db.Conexion;
 import org.in5bv.dorbalaldana.kevinxulu.models.Alumnos;
+import org.in5bv.dorbalaldana.kevinxulu.reports.GenerarReporte;
 
 /**
  * 
@@ -118,6 +122,11 @@ public class CarrerasTecnicasController implements Initializable {
     @FXML
     private ImageView imgReporte;
     
+    @FXML
+    private TextField txtCantidadDatos;
+    
+    private int contador = 0;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarDatos();
@@ -142,6 +151,10 @@ public class CarrerasTecnicasController implements Initializable {
                 System.out.println(carreras.toString());
                 
                lista.add(carreras);
+               
+                for (int i = 0;i <= lista.size(); i++) {
+                    contador = 0+i;
+                }
                 
             }
             
@@ -174,6 +187,7 @@ public class CarrerasTecnicasController implements Initializable {
     }
     
     public void cargarDatos(){
+        CarrerasTecnicas carreraTecnica = new CarrerasTecnicas();
         tblCarrerasTecnicas.setItems(getCarrerasTecnicas());
         colCodigo.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("codigoTecnico"));
         colCarrera.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("carrera"));
@@ -181,6 +195,8 @@ public class CarrerasTecnicasController implements Initializable {
         //colGrado.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("grado"));
         colSeccion.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String>("seccion"));
         colJornada.setCellValueFactory(new PropertyValueFactory<CarrerasTecnicas, String> ("jornada"));
+        carreraTecnica.setCantidadDatos(contador);
+        txtCantidadDatos.setText(Integer.toString(carreraTecnica.getCantidadDatos()));
     }
     
     private boolean existeElementoSeleccionado(){
@@ -626,6 +642,8 @@ public class CarrerasTecnicasController implements Initializable {
     
     @FXML
     private void clicReporte(){
+        // Inicio de la version no pro de la aplicacion:
+        /*
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         // cambiar titulo del mensaje:
         alerta.setTitle("AVISO!");
@@ -639,7 +657,12 @@ public class CarrerasTecnicasController implements Initializable {
         alerta.setContentText("Esta función solo esta disponible en la versión PRO");
         Stage stageAlert = (Stage) alerta.getDialogPane().getScene().getWindow();
         stageAlert.getIcons().add(new Image(PAQUETE_IMAGES + "Icono.png"));
-        alerta.show();
+        alerta.show();*/
+        
+        // Inicio de la vesion pro de la aplicacion
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("LOGO_CARRERAS", PAQUETE_IMAGES + "mecanico.png");
+        GenerarReporte.getInstance().mostrarReporte("CarrerasTecnicas.jasper", parametros, "Reporte de Carreras Tecnicas");
     }
     
     @FXML

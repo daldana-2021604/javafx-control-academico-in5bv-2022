@@ -20,10 +20,13 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.in5bv.dorbalaldana.db.Conexion;
 
 
+
+
 public class GenerarReporte {
 
     private static GenerarReporte instance;
     private JasperViewer jasperViewer;
+    private final String PAQUETE_IMAGES = "org/in5bv/dorbalaldana/kevinxulu/resources/images/";
 
     private GenerarReporte() {
 
@@ -40,6 +43,7 @@ public class GenerarReporte {
         try {
             URL urlFile = new URL(getClass().getResource(nombreReporte).toString());
             
+            parametros.put("LOGO_HEADER", PAQUETE_IMAGES + "Icono.png");
             JasperReport jasperReport = (JasperReport)JRLoader.loadObject(urlFile);
             
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros,Conexion.getInstance().getConexion());
