@@ -1,0 +1,13 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+
+
+#fondo{
+    -fx-background-color:  #13068C;
+}
+
+.Datos{
+    -fx-text-fill: #FFFFFF;
+}
