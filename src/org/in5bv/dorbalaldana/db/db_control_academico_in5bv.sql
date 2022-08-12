@@ -119,13 +119,28 @@ CREATE TABLE IF NOT EXISTS asignaciones_alumnos(
 	ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-SELECT * FROM alumnos;
-SELECT * FROM carreras_tecnicas;
-SELECT * FROM cursos;
-SELECT * FROM horarios;
-SELECT * FROM instructores;
-SELECT * FROM salones;
+DROP TABLE IF EXISTS roles;
+CREATE TABLE IF NOT EXISTS roles(
+	id INT NOT NULL,
+    descripcion VARCHAR(50)	NOT NULL,
+    PRIMARY KEY (id)
+);
 
+DROP TABLE IF EXISTS usuarios;
+CREATE TABLE IF NOT EXISTS usuarios(
+	user VARCHAR(25) NOT NULL,
+    pass VARCHAR(255) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    rol_id INT NOT NULL,
+    PRIMARY KEY (user),
+    CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id) REFERENCES roles(id)
+);
+
+INSERT INTO roles(id, descripcion) VALUES (1, "Administrador");
+INSERT INTO roles(id, descripcion) VALUES (2, "Estandar");
+
+INSERT INTO usuarios(user, pass, nombre, rol_id) VALUES("root", "admin", "Jorge Pérez", 1);
+INSERT INTO usuarios(user, pass, nombre, rol_id) VALUES ("kinal", "12345", "Luis Canto", 2);
 
 -- Alumnos 
 INSERT INTO alumnos(carne, nombre1, nombre2, nombre3, apellido1, apellido2)
@@ -389,7 +404,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL sp_alumnos_report;
 
 -- __________________________________________________________Salones__________________________________________________________ --
 -- READ
@@ -982,8 +996,6 @@ DELIMITER ;
 
 
 
-CALL sp_cursos_report();
-
 -- __________________________________________________________Horarios__________________________________________________________ --
 -- READ
 DELIMITER $$
@@ -1251,16 +1263,24 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL sp_asignaciones_alumnos_report();
-CALL sp_asignaciones_alumnos_report_by_id();
+/*************************************************Roles y usuario************************************************************************************/
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_usuario_read $$
+CREATE PROCEDURE sp_usuario_read(IN _user VARCHAR(255), IN _pass VARCHAR(255))
+BEGIN
+	SELECT
+		us.user,
+        us.pass,
+        us.nombre,
+        us.rol_id,
+        r.descripcion
+    FROM 
+		usuarios AS us INNER JOIN roles AS r
+        ON us.rol_id = r.id 
+	WHERE user = _user AND pass = _pass;
+END $$
+DELIMITER ;
 
+CALL sp_usuario_read("kinal","12345");
 
-SELECT  id, nombre3, direccion, email,telefono, fecha_nacimiento FROM instructores;
-
-SELECT  id, CONCAT( nombre1," ",nombre2," ", IF(nombre3 IS NULL, " ", nombre3)) AS nombre_completo, direccion, email,telefono, fecha_nacimiento FROM instructores;
-
-SELECT  id, CONCAT( nombre1," ",nombre2," ",nombre3," ",apellido1," ",apellido2) AS nombre_completo, direccion, email,telefono, fecha_nacimiento FROM instructores;
-
-SELECT  id, CONCAT( nombre1," ",nombre2," ", IF(nombre3 IS NULL, " ", nombre3) ," ",apellido1," ",IF(apellido2 IS NULL, " ", apellido2)) AS nombre_completo, direccion, email,telefono, fecha_nacimiento FROM instructores;
-
-CALL sp_salones_read;
+SELECT *FROM usuarios;
